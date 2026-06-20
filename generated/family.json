@@ -1,140 +1,111 @@
 {
-  "generated_at": "2026-06-20T20:12:40.445788+00:00",
+  "generated_at": "2026-06-20T20:41:28.974607+00:00",
   "stats": {
-    "total_members": 8,
+    "total_members": 6,
     "male_count": 3,
-    "female_count": 5,
-    "average_age": 55,
-    "oldest_member": "Ram Sharma",
-    "youngest_member": "Neha Sharma",
+    "female_count": 3,
+    "average_age": 31,
+    "oldest_member": "Mahendra Prasad Singh",
+    "youngest_member": "Kashvi Singh",
     "total_generations": 3,
     "cities": [
-      "Bengaluru",
-      "Mumbai",
-      "Nagpur",
-      "Pune"
+      "Nagpur"
     ],
-    "city_count": 4,
+    "city_count": 1,
     "upcoming_birthdays": [
       {
-        "name": "Neha Sharma",
-        "birthday": "21 Jun 2026",
-        "days_until_birthday": 0,
-        "turning_age": 27
+        "name": "Shashi Singh",
+        "birthday": "12 Aug 2026",
+        "days_until_birthday": 52,
+        "turning_age": 54
       },
       {
-        "name": "Sita Sharma",
-        "birthday": "15 Aug 2026",
-        "days_until_birthday": 55,
-        "turning_age": 82
+        "name": "Mahendra Prasad Singh",
+        "birthday": "11 Sep 2026",
+        "days_until_birthday": 82,
+        "turning_age": 62
       }
     ]
   },
   "root_ancestors": [
     {
       "id": "p001",
-      "name": "Ram Sharma"
+      "name": "Mahendra Prasad Singh"
     },
     {
       "id": "p002",
-      "name": "Sita Sharma"
+      "name": "Shashi Singh"
     },
     {
       "id": "p004",
-      "name": "Sunita Sharma"
-    },
-    {
-      "id": "p006",
-      "name": "Anita Sharma"
+      "name": "Kanchan Singh"
     }
   ],
   "people": [
     {
       "id": "p001",
-      "name": "Ram Sharma",
-      "dob": "1940-05-10",
+      "name": "Mahendra Prasad Singh",
+      "dob": "1964-09-11",
       "gender": "male",
-      "birth_place": "Nagpur",
+      "birth_place": "NA",
       "current_city": "Nagpur",
       "photo": "male.svg",
-      "age": 86,
+      "age": 61,
       "generation": 1
     },
     {
       "id": "p002",
-      "name": "Sita Sharma",
-      "dob": "1944-08-15",
+      "name": "Shashi Singh",
+      "dob": "1972-08-12",
       "gender": "female",
-      "birth_place": "Nagpur",
+      "birth_place": "Gorakhpur",
       "current_city": "Nagpur",
       "photo": "female.svg",
-      "age": 81,
+      "age": 53,
       "generation": 1
     },
     {
       "id": "p003",
-      "name": "Mahesh Sharma",
-      "dob": "1968-01-10",
+      "name": "Mohit M Singh",
+      "dob": "1990-10-06",
       "gender": "male",
-      "birth_place": "Nagpur",
+      "birth_place": "Gorakhpur",
       "current_city": "Nagpur",
       "photo": "male.svg",
-      "age": 58,
+      "age": 35,
       "generation": 2
     },
     {
       "id": "p004",
-      "name": "Sunita Sharma",
-      "dob": "1972-04-18",
+      "name": "Kanchan Singh",
+      "dob": "1993-12-25",
       "gender": "female",
-      "birth_place": "Pune",
+      "birth_place": "Maihar",
       "current_city": "Nagpur",
       "photo": "female.svg",
-      "age": 54,
+      "age": 32,
       "generation": 1
     },
     {
       "id": "p005",
-      "name": "Rakesh Sharma",
-      "dob": "1970-09-20",
+      "name": "Satvik Singh",
+      "dob": "2022-09-24",
       "gender": "male",
       "birth_place": "Nagpur",
-      "current_city": "Mumbai",
+      "current_city": "Nagpur",
       "photo": "male.svg",
-      "age": 55,
-      "generation": 2
-    },
-    {
-      "id": "p006",
-      "name": "Anita Sharma",
-      "dob": "1975-03-11",
-      "gender": "female",
-      "birth_place": "Mumbai",
-      "current_city": "Mumbai",
-      "photo": "female.svg",
-      "age": 51,
-      "generation": 1
-    },
-    {
-      "id": "p007",
-      "name": "Priya Sharma",
-      "dob": "1998-02-12",
-      "gender": "female",
-      "birth_place": "Nagpur",
-      "current_city": "Pune",
-      "photo": "female.svg",
-      "age": 28,
+      "age": 3,
       "generation": 3
     },
     {
-      "id": "p008",
-      "name": "Neha Sharma",
-      "dob": "2000-06-21",
+      "id": "p006",
+      "name": "Kashvi Singh",
+      "dob": "2025-03-15",
       "gender": "female",
       "birth_place": "Nagpur",
-      "current_city": "Bengaluru",
+      "current_city": "Nagpur",
       "photo": "female.svg",
-      "age": 26,
+      "age": 1,
       "generation": 3
     }
   ],
@@ -151,8 +122,8 @@
     },
     {
       "type": "spouse",
-      "person1": "p005",
-      "person2": "p006"
+      "person1": "p007",
+      "person2": "p008"
     },
     {
       "type": "parent",
@@ -166,33 +137,23 @@
     },
     {
       "type": "parent",
-      "parent": "p001",
+      "parent": "p003",
       "child": "p005"
     },
     {
       "type": "parent",
-      "parent": "p002",
+      "parent": "p004",
       "child": "p005"
     },
     {
       "type": "parent",
       "parent": "p003",
-      "child": "p007"
+      "child": "p006"
     },
     {
       "type": "parent",
       "parent": "p004",
-      "child": "p007"
-    },
-    {
-      "type": "parent",
-      "parent": "p003",
-      "child": "p008"
-    },
-    {
-      "type": "parent",
-      "parent": "p004",
-      "child": "p008"
+      "child": "p006"
     }
   ]
 }

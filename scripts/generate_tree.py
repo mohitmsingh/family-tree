@@ -315,6 +315,18 @@ stats = {
 
 }
 
+spouses = []
+
+for rel in data["relationships"]:
+
+    if rel["type"] == "spouse":
+
+        spouses.append({
+
+            "person1": rel["person1"],
+            "person2": rel["person2"]
+
+        })
 # --------------------------------------------------
 # FIND ROOT ANCESTORS
 # --------------------------------------------------
@@ -343,7 +355,8 @@ for person in data["people"]:
 output = {
 
     "generated_at":
-        datetime.now(UTC).isoformat(),
+        datetime.now(UTC)
+        .isoformat(),
 
     "stats":
         stats,
@@ -355,7 +368,10 @@ output = {
         data["people"],
 
     "relationships":
-        data["relationships"]
+        data["relationships"],
+
+    "spouses":
+        spouses
 
 }
 

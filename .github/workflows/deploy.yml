@@ -20,58 +20,61 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-
   build:
-
+    name: Build Site
     runs-on: ubuntu-latest
-
     steps:
-
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v5
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.12"
+          cache: "pip"
 
       - name: Install Dependencies
         run: |
-          pip install pyyaml
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-      - name: Validate YAML
+      - name: Validate Family YAML
         run: |
           python scripts/validate_yaml.py
 
-      - name: Generate Tree Data
+      - name: Generate Family Tree Data
         run: |
           python scripts/generate_tree.py
 
-      - name: Build Site
+      - name: Build GitHub Pages Site
         run: |
 
-          mkdir site
+          mkdir -p site
 
           cp -r web/* site/
           cp -r photos site/
           cp -r generated site/
 
+          touch site/.nojekyll
+
+          echo "Site contents:"
+          find site -type f | sort
+
       - name: Upload Pages Artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: site
 
   deploy:
+    name: Deploy to GitHub Pages
+    needs:
+      - build
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
 
-    runs-on: ubuntu-latest
-
-    needs: build
-
     steps:
-
-      - name: Deploy
+      - name: Deploy Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

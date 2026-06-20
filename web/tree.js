@@ -266,3 +266,23 @@ function drawSpouseLines(
     }
   );
 }
+
+const spouseMap = {};
+
+data.spouses.forEach(s => {
+
+  spouseMap[s.person1] =
+    s.person2;
+
+  spouseMap[s.person2] =
+    s.person1;
+
+});
+
+const peopleMap = {};
+
+data.people.forEach(p => {
+
+  peopleMap[p.id] = p;
+
+});
