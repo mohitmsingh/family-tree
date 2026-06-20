@@ -14,28 +14,63 @@ function initializeTree(data) {
 
     if (r.type === "spouse") {
 
-      spouseMap[r.person1] = r.person2;
-      spouseMap[r.person2] = r.person1;
+      spouseMap[r.person1] =
+        r.person2;
+
+      spouseMap[r.person2] =
+        r.person1;
+
     }
 
     if (r.type === "parent") {
 
       parentLinks.push(r);
+
     }
 
   });
 
+  // --------------------------
+  // One parent per child
+  // --------------------------
+
   const childrenMap = {};
+  const assignedChildren =
+    new Set();
 
   parentLinks.forEach(link => {
 
-    if (!childrenMap[link.parent]) {
+    if (
+      assignedChildren.has(
+        link.child
+      )
+    ) {
 
-      childrenMap[link.parent] = [];
+      return;
+
     }
 
-    childrenMap[link.parent]
-      .push(link.child);
+    assignedChildren.add(
+      link.child
+    );
+
+    if (
+      !childrenMap[
+        link.parent
+      ]
+    ) {
+
+      childrenMap[
+        link.parent
+      ] = [];
+
+    }
+
+    childrenMap[
+      link.parent
+    ].push(
+      link.child
+    );
 
   });
 
@@ -48,51 +83,11 @@ function initializeTree(data) {
 
   const roots =
     data.people.filter(
-      p => !allChildren.has(p.id)
-    );
-
-  if (!roots.length) {
-
-    console.error(
-      "No root ancestor found"
-    );
-
-    return;
-  }
-
-  function buildNode(personId) {
-
-    const person =
-      people[personId];
-
-    const children =
-      childrenMap[personId] || [];
-
-    return {
-
-      ...person,
-
-      children:
-        children.map(
-          buildNode
+      p =>
+        !allChildren.has(
+          p.id
         )
-
-    };
-  }
-
-  const rootData =
-    buildNode(
-      roots[0].id
     );
-
-  const root =
-    d3.hierarchy(rootData);
-
-  const treeLayout =
-    d3.tree()
-      .nodeSize([180, 180]);
-
-  treeLayout(root);
 
   const svg =
     d3.select("#treeSvg");
@@ -100,11 +95,15 @@ function initializeTree(data) {
   const group =
     d3.select("#treeGroup");
 
-  group.selectAll("*").remove();
+  group.selectAll("*")
+    .remove();
 
   const zoom =
     d3.zoom()
-      .scaleExtent([0.25, 5])
+      .scaleExtent([
+        0.25,
+        5
+      ])
       .on(
         "zoom",
         event =>
@@ -116,173 +115,308 @@ function initializeTree(data) {
 
   svg.call(zoom);
 
-  group
-    .selectAll(".tree-link")
-    .data(root.links())
-    .enter()
-    .append("path")
-    .attr("class", "tree-link")
-    .attr(
-      "d",
-      d3.linkVertical()
-        .x(d => d.x)
-        .y(d => d.y)
-    );
+  function buildNode(
+    personId
+  ) {
 
-  const nodes =
-    group
-      .selectAll(".person-node")
-      .data(root.descendants())
-      .enter()
-      .append("g")
-      .attr(
-        "class",
-        "person-node"
-      )
-      .attr(
-        "transform",
-        d =>
-          `translate(${d.x},${d.y})`
-      );
+    return {
 
-  nodes
-    .append("image")
-    .attr(
-      "href",
-      d =>
-        `../photos/${d.data.photo}`
-    )
-    .attr("x", -40)
-    .attr("y", -40)
-    .attr("width", 80)
-    .attr("height", 80)
-    .attr(
-      "class",
-      "person-image"
-    )
-    .on(
-      "mousemove",
-      (event,d) =>
-        showTooltip(
-          event,
-          d.data
+      ...people[
+        personId
+      ],
+
+      children:
+        (
+          childrenMap[
+            personId
+          ] || []
+        ).map(
+          buildNode
         )
-    )
-    .on(
-      "mouseout",
-      hideTooltip
-    );
 
-  nodes
-    .append("text")
-    .attr(
-      "class",
-      "person-name"
-    )
-    .attr("y", 65)
-    .text(
-      d => d.data.name
-    );
+    };
 
-  drawSpouseLines(
-    root,
-    spouseMap,
-    group
-  );
-}
+  }
 
-function drawSpouseLines(
-  root,
-  spouseMap,
-  group
-) {
+  roots.forEach(
+    (
+      rootPerson,
+      index
+    ) => {
 
-  const nodes =
-    root.descendants();
+      const root =
+        d3.hierarchy(
+          buildNode(
+            rootPerson.id
+          )
+        );
 
-  const nodeMap = {};
+      const treeLayout =
+        d3.tree()
+          .nodeSize([
+            260,
+            220
+          ]);
 
-  nodes.forEach(node => {
+      treeLayout(root);
 
-    nodeMap[node.data.id] =
-      node;
+      const xOffset =
+        index * 1200;
 
-  });
+      root.descendants()
+        .forEach(node => {
 
-  const drawn =
-    new Set();
+          node.x +=
+            xOffset;
 
-  Object.entries(
-    spouseMap
-  ).forEach(
-    ([person, spouse]) => {
+        });
 
-      const key =
-        [person, spouse]
-          .sort()
-          .join("-");
-
-      if (drawn.has(key))
-        return;
-
-      drawn.add(key);
-
-      const p1 =
-        nodeMap[person];
-
-      const p2 =
-        nodeMap[spouse];
-
-      if (!p1 || !p2)
-        return;
+      // ------------------
+      // Parent links
+      // ------------------
 
       group
-        .append("line")
+        .selectAll(
+          `.tree-link-${index}`
+        )
+        .data(
+          root.links()
+        )
+        .enter()
+        .append("path")
         .attr(
-          "x1",
-          p1.x
+          "class",
+          "tree-link"
         )
         .attr(
-          "y1",
-          p1.y
-        )
-        .attr(
-          "x2",
-          p2.x
-        )
-        .attr(
-          "y2",
-          p2.y
-        )
-        .attr(
-          "stroke",
-          "#e74c3c"
-        )
-        .attr(
-          "stroke-width",
-          3
+          "d",
+          d3.linkVertical()
+            .x(
+              d => d.x
+            )
+            .y(
+              d => d.y
+            )
         );
+
+      const nodes =
+        group
+          .selectAll(
+            `.person-node-${index}`
+          )
+          .data(
+            root.descendants()
+          )
+          .enter()
+          .append("g")
+          .attr(
+            "class",
+            "person-node"
+          )
+          .attr(
+            "transform",
+            d =>
+              `translate(${d.x},${d.y})`
+          );
+
+      nodes.each(
+        function(d) {
+
+          const g =
+            d3.select(
+              this
+            );
+
+          // ------------------
+          // Person Image
+          // ------------------
+
+          g.append(
+            "image"
+          )
+            .attr(
+              "href",
+              `../photos/${d.data.photo}`
+            )
+            .attr(
+              "x",
+              -40
+            )
+            .attr(
+              "y",
+              -40
+            )
+            .attr(
+              "width",
+              80
+            )
+            .attr(
+              "height",
+              80
+            )
+            .attr(
+              "class",
+              "person-image"
+            )
+            .on(
+              "mousemove",
+              event =>
+                showTooltip(
+                  event,
+                  d.data
+                )
+            )
+            .on(
+              "mouseout",
+              hideTooltip
+            );
+
+          // ------------------
+          // Person Name
+          // ------------------
+
+          g.append(
+            "text"
+          )
+            .attr(
+              "class",
+              "person-name"
+            )
+            .attr(
+              "y",
+              65
+            )
+            .text(
+              d.data.name
+            );
+
+          // ------------------
+          // Spouse
+          // ------------------
+
+          const spouseId =
+            spouseMap[
+              d.data.id
+            ];
+
+          if (
+            !spouseId
+          ) {
+
+            return;
+
+          }
+
+          const spouse =
+            people[
+              spouseId
+            ];
+
+          // marriage line
+
+          g.append(
+            "line"
+          )
+            .attr(
+              "class",
+              "spouse-line"
+            )
+            .attr(
+              "x1",
+              40
+            )
+            .attr(
+              "y1",
+              0
+            )
+            .attr(
+              "x2",
+              80
+            )
+            .attr(
+              "y2",
+              0
+            );
+
+          // spouse image
+
+          g.append(
+            "image"
+          )
+            .attr(
+              "href",
+              `../photos/${spouse.photo}`
+            )
+            .attr(
+              "x",
+              80
+            )
+            .attr(
+              "y",
+              -30
+            )
+            .attr(
+              "width",
+              60
+            )
+            .attr(
+              "height",
+              60
+            )
+            .attr(
+              "class",
+              "spouse-image"
+            )
+            .on(
+              "mousemove",
+              event =>
+                showTooltip(
+                  event,
+                  spouse
+                )
+            )
+            .on(
+              "mouseout",
+              hideTooltip
+            );
+
+          // spouse name
+
+          g.append(
+            "text"
+          )
+            .attr(
+              "class",
+              "spouse-name"
+            )
+            .attr(
+              "x",
+              110
+            )
+            .attr(
+              "y",
+              50
+            )
+            .text(
+              spouse.name
+            );
+
+        }
+      );
 
     }
   );
+
+  svg.call(
+    zoom.transform,
+    d3.zoomIdentity
+      .translate(
+        250,
+        120
+      )
+      .scale(
+        0.8
+      )
+  );
+
 }
-
-const spouseMap = {};
-
-data.spouses.forEach(s => {
-
-  spouseMap[s.person1] =
-    s.person2;
-
-  spouseMap[s.person2] =
-    s.person1;
-
-});
-
-const peopleMap = {};
-
-data.people.forEach(p => {
-
-  peopleMap[p.id] = p;
-
-});

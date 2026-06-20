@@ -393,3 +393,31 @@ header {
   white-space: nowrap;
 
 }
+.spouse-image {
+  cursor: pointer;
+}
+
+.spouse-image:hover {
+
+  transform: scale(1.08);
+
+}
+
+.spouse-line {
+
+  stroke: #e74c3c;
+
+  stroke-width: 3;
+
+}
+
+.spouse-name {
+  font-size: 12px;
+  font-weight: 700;
+  fill: #e74c3c;
+  text-anchor: middle;
+}
+
+.search-match-image {
+  filter: drop-shadow(0 0 10px gold);
+}

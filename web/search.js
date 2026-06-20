@@ -1,11 +1,11 @@
 function initializeSearch() {
 
-  const searchInput =
+  const input =
     document.getElementById(
       "searchInput"
     );
 
-  searchInput.addEventListener(
+  input.addEventListener(
     "input",
     function() {
 
@@ -14,40 +14,58 @@ function initializeSearch() {
           .trim()
           .toLowerCase();
 
-      d3.selectAll(".person-image")
-        .classed(
-          "search-match-image",
-          false
-        );
+      d3.selectAll(
+        ".person-image"
+      )
+      .classed(
+        "search-match-image",
+        false
+      );
+
+      d3.selectAll(
+        ".spouse-image"
+      )
+      .classed(
+        "search-match-image",
+        false
+      );
 
       if (!term) {
+
         return;
+
       }
 
-      d3.selectAll(".person-node")
-        .each(function(d) {
+      d3.selectAll(
+        ".person-node"
+      )
+      .each(function() {
 
-          const personName =
-            d.data.name
-              .toLowerCase();
+        const node =
+          d3.select(this);
 
-          if (
-            personName.includes(term)
-          ) {
+        const text =
+          node.text()
+            .toLowerCase();
 
-            d3.select(this)
-              .select("image")
-              .classed(
-                "search-match-image",
-                true
-              );
+        if (
+          text.includes(term)
+        ) {
 
-            this.parentNode
-              .appendChild(this);
-          }
+          node
+            .selectAll(
+              "image"
+            )
+            .classed(
+              "search-match-image",
+              true
+            );
 
-        });
+        }
+
+      });
 
     }
   );
+
 }

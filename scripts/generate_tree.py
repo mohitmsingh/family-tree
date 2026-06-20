@@ -1,5 +1,5 @@
+import csv
 import json
-import yaml
 
 from collections import defaultdict
 from datetime import datetime
@@ -8,70 +8,188 @@ from datetime import UTC
 
 
 # --------------------------------------------------
-# LOAD YAML
+# CONFIG
 # --------------------------------------------------
 
-with open(
-    "data/family.yaml",
-    "r",
-    encoding="utf-8"
-) as f:
+PEOPLE_CSV = "data/people.csv"
+FAMILIES_CSV = "data/families.csv"
+OUTPUT_JSON = "generated/family.json"
 
-    data = yaml.safe_load(f)
+today = date.today()
 
 
 # --------------------------------------------------
 # HELPERS
 # --------------------------------------------------
 
-today = date.today()
-
-
 def calculate_age(dob_str):
-
     dob = datetime.strptime(
         dob_str,
         "%Y-%m-%d"
     ).date()
 
-    age = (
+    return (
         today.year
         - dob.year
         - (
             (today.month, today.day)
-            < (dob.month, dob.day)
+            <
+            (dob.month, dob.day)
         )
     )
 
-    return age
-
 
 # --------------------------------------------------
-# ENRICH PEOPLE
+# LOAD PEOPLE
 # --------------------------------------------------
 
-for person in data["people"]:
+people = []
 
-    person["age"] = calculate_age(
-        person["dob"]
-    )
+with open(
+    PEOPLE_CSV,
+    newline="",
+    encoding="utf-8"
+) as f:
 
-    if not person.get("photo"):
+    reader = csv.DictReader(f)
 
-        person["photo"] = (
-            "female.svg"
-            if person["gender"] == "female"
-            else "male.svg"
+    for person in reader:
+
+        person["age"] = calculate_age(
+            person["dob"]
         )
 
+        if not person.get("photo"):
+
+            person["photo"] = (
+                "female.svg"
+                if person["gender"].lower() == "female"
+                else "male.svg"
+            )
+
+        people.append(person)
+
+
+people_by_id = {
+    person["id"]: person
+    for person in people
+}
+
 
 # --------------------------------------------------
-# BUILD GENERATION MAP
+# LOAD FAMILIES
+# --------------------------------------------------
+
+families = []
+relationships = []
+spouses = []
+
+with open(
+    FAMILIES_CSV,
+    newline="",
+    encoding="utf-8"
+) as f:
+
+    reader = csv.DictReader(f)
+
+    for family in reader:
+
+        families.append(family)
+
+        parent1 = family["parent1"].strip()
+        parent2 = family["parent2"].strip()
+
+        # spouse relationship
+
+        spouses.append({
+            "person1": parent1,
+            "person2": parent2
+        })
+
+        relationships.append({
+            "type": "spouse",
+            "person1": parent1,
+            "person2": parent2
+        })
+
+        # children
+
+        children = [
+
+            child.strip()
+
+            for child in
+            family["children"].split("|")
+
+            if child.strip()
+
+        ]
+
+        for child in children:
+
+            relationships.append({
+                "type": "parent",
+                "parent": parent1,
+                "child": child
+            })
+
+            relationships.append({
+                "type": "parent",
+                "parent": parent2,
+                "child": child
+            })
+
+
+# --------------------------------------------------
+# ROOT DETECTION
+# --------------------------------------------------
+
+all_people_ids = {
+    p["id"]
+    for p in people
+}
+
+all_children_ids = {
+    rel["child"]
+    for rel in relationships
+    if rel["type"] == "parent"
+}
+
+#
+# Internal roots:
+# Used for generation calculation
+#
+internal_root_people = list(
+    all_people_ids - all_children_ids
+)
+
+#
+# Display roots:
+# Used only for D3 rendering
+# Show only oldest male ancestors
+#
+display_root_people = [
+
+    p["id"]
+
+    for p in people
+
+    if (
+        p["gender"].lower() == "male"
+        and
+        p["id"] not in all_children_ids
+    )
+
+]
+
+
+# --------------------------------------------------
+# GENERATION MAP
 # --------------------------------------------------
 
 parents = defaultdict(list)
 
-for rel in data["relationships"]:
+for rel in relationships:
 
     if rel["type"] == "parent":
 
@@ -81,22 +199,6 @@ for rel in data["relationships"]:
             rel["parent"]
         )
 
-
-all_people_ids = {
-    p["id"]
-    for p in data["people"]
-}
-
-all_children_ids = {
-    rel["child"]
-    for rel in data["relationships"]
-    if rel["type"] == "parent"
-}
-
-root_people = list(
-    all_people_ids -
-    all_children_ids
-)
 
 generation_cache = {}
 
@@ -109,7 +211,7 @@ def generation(person_id):
             person_id
         ]
 
-    if person_id in root_people:
+    if person_id in internal_root_people:
 
         generation_cache[
             person_id
@@ -129,20 +231,19 @@ def generation(person_id):
 
     generation_cache[
         person_id
-    ] = (
-        parent_generation + 1
-    )
+    ] = parent_generation + 1
 
     return (
         parent_generation + 1
     )
 
 
-for person in data["people"]:
+for person in people:
 
     person["generation"] = generation(
         person["id"]
     )
+
 
 # --------------------------------------------------
 # UPCOMING BIRTHDAYS (NEXT 90 DAYS)
@@ -150,7 +251,7 @@ for person in data["people"]:
 
 upcoming_birthdays = []
 
-for person in data["people"]:
+for person in people:
 
     dob = datetime.strptime(
         person["dob"],
@@ -175,7 +276,6 @@ for person in data["people"]:
         next_birthday - today
     ).days
 
-    # Only birthdays in next 90 days
     if days_left <= 90:
 
         upcoming_birthdays.append({
@@ -201,17 +301,18 @@ upcoming_birthdays.sort(
         x["days_until_birthday"]
 )
 
+
 # --------------------------------------------------
-# STATISTICS
+# STATS
 # --------------------------------------------------
 
 male_count = sum(
 
     1
 
-    for person in data["people"]
+    for p in people
 
-    if person["gender"] == "male"
+    if p["gender"].lower() == "male"
 
 )
 
@@ -219,9 +320,9 @@ female_count = sum(
 
     1
 
-    for person in data["people"]
+    for p in people
 
-    if person["gender"] == "female"
+    if p["gender"].lower() == "female"
 
 )
 
@@ -229,53 +330,37 @@ average_age = round(
 
     sum(
         p["age"]
-        for p in data["people"]
+        for p in people
     )
 
-    / len(data["people"])
+    / len(people)
 
 )
 
 oldest_member = max(
-
-    data["people"],
-
-    key=lambda p:
-        p["age"]
-
+    people,
+    key=lambda p: p["age"]
 )
 
 youngest_member = min(
-
-    data["people"],
-
-    key=lambda p:
-        p["age"]
-
+    people,
+    key=lambda p: p["age"]
 )
 
 total_generations = max(
-
     p["generation"]
-
-    for p in data["people"]
-
+    for p in people
 )
 
 cities = sorted(
 
     set(
 
-        p.get(
-            "current_city",
-            ""
-        )
+        p["current_city"]
 
-        for p in data["people"]
+        for p in people
 
-        if p.get(
-            "current_city"
-        )
+        if p.get("current_city")
 
     )
 
@@ -284,7 +369,7 @@ cities = sorted(
 stats = {
 
     "total_members":
-        len(data["people"]),
+        len(people),
 
     "male_count":
         male_count,
@@ -315,27 +400,16 @@ stats = {
 
 }
 
-spouses = []
 
-for rel in data["relationships"]:
-
-    if rel["type"] == "spouse":
-
-        spouses.append({
-
-            "person1": rel["person1"],
-            "person2": rel["person2"]
-
-        })
 # --------------------------------------------------
-# FIND ROOT ANCESTORS
+# ROOT ANCESTORS
 # --------------------------------------------------
 
 root_ancestors = []
 
-for person in data["people"]:
+for person in people:
 
-    if person["id"] in root_people:
+    if person["id"] in display_root_people:
 
         root_ancestors.append({
 
@@ -355,8 +429,9 @@ for person in data["people"]:
 output = {
 
     "generated_at":
-        datetime.now(UTC)
-        .isoformat(),
+        datetime.now(
+            UTC
+        ).isoformat(),
 
     "stats":
         stats,
@@ -365,19 +440,18 @@ output = {
         root_ancestors,
 
     "people":
-        data["people"],
+        people,
 
     "relationships":
-        data["relationships"],
+        relationships,
 
     "spouses":
         spouses
 
 }
 
-
 with open(
-    "generated/family.json",
+    OUTPUT_JSON,
     "w",
     encoding="utf-8"
 ) as f:
@@ -390,12 +464,16 @@ with open(
     )
 
 
+# --------------------------------------------------
+# SUMMARY
+# --------------------------------------------------
+
 print(
     "Successfully generated:"
 )
 
 print(
-    "generated/family.json"
+    OUTPUT_JSON
 )
 
 print(
@@ -408,4 +486,8 @@ print(
 
 print(
     f"Cities: {stats['city_count']}"
+)
+
+print(
+    f"Root Ancestors: {len(root_ancestors)}"
 )

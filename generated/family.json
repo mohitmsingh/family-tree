@@ -1,18 +1,25 @@
 {
-  "generated_at": "2026-06-20T20:41:28.974607+00:00",
+  "generated_at": "2026-06-20T21:26:42.704220+00:00",
   "stats": {
-    "total_members": 6,
-    "male_count": 3,
-    "female_count": 3,
-    "average_age": 31,
-    "oldest_member": "Mahendra Prasad Singh",
+    "total_members": 8,
+    "male_count": 4,
+    "female_count": 4,
+    "average_age": 37,
+    "oldest_member": "Rajendra Kushwaha",
     "youngest_member": "Kashvi Singh",
     "total_generations": 3,
     "cities": [
+      "Jabalpur",
       "Nagpur"
     ],
-    "city_count": 1,
+    "city_count": 2,
     "upcoming_birthdays": [
+      {
+        "name": "Vidya Kushwaha",
+        "birthday": "21 Jun 2026",
+        "days_until_birthday": 0,
+        "turning_age": 52
+      },
       {
         "name": "Shashi Singh",
         "birthday": "12 Aug 2026",
@@ -33,12 +40,8 @@
       "name": "Mahendra Prasad Singh"
     },
     {
-      "id": "p002",
-      "name": "Shashi Singh"
-    },
-    {
-      "id": "p004",
-      "name": "Kanchan Singh"
+      "id": "p007",
+      "name": "Rajendra Kushwaha"
     }
   ],
   "people": [
@@ -84,7 +87,7 @@
       "current_city": "Nagpur",
       "photo": "female.svg",
       "age": 32,
-      "generation": 1
+      "generation": 2
     },
     {
       "id": "p005",
@@ -107,6 +110,28 @@
       "photo": "female.svg",
       "age": 1,
       "generation": 3
+    },
+    {
+      "id": "p007",
+      "name": "Rajendra Kushwaha",
+      "dob": "1964-02-12",
+      "gender": "male",
+      "birth_place": "MP",
+      "current_city": "Jabalpur",
+      "photo": "male.svg",
+      "age": 62,
+      "generation": 1
+    },
+    {
+      "id": "p008",
+      "name": "Vidya Kushwaha",
+      "dob": "1975-06-21",
+      "gender": "female",
+      "birth_place": "MP",
+      "current_city": "Jabalpur",
+      "photo": "female.svg",
+      "age": 51,
+      "generation": 1
     }
   ],
   "relationships": [
@@ -114,16 +139,6 @@
       "type": "spouse",
       "person1": "p001",
       "person2": "p002"
-    },
-    {
-      "type": "spouse",
-      "person1": "p003",
-      "person2": "p004"
-    },
-    {
-      "type": "spouse",
-      "person1": "p007",
-      "person2": "p008"
     },
     {
       "type": "parent",
@@ -136,6 +151,26 @@
       "child": "p003"
     },
     {
+      "type": "spouse",
+      "person1": "p007",
+      "person2": "p008"
+    },
+    {
+      "type": "parent",
+      "parent": "p007",
+      "child": "p004"
+    },
+    {
+      "type": "parent",
+      "parent": "p008",
+      "child": "p004"
+    },
+    {
+      "type": "spouse",
+      "person1": "p003",
+      "person2": "p004"
+    },
+    {
       "type": "parent",
       "parent": "p003",
       "child": "p005"
@@ -154,6 +189,20 @@
       "type": "parent",
       "parent": "p004",
       "child": "p006"
+    }
+  ],
+  "spouses": [
+    {
+      "person1": "p001",
+      "person2": "p002"
+    },
+    {
+      "person1": "p007",
+      "person2": "p008"
+    },
+    {
+      "person1": "p003",
+      "person2": "p004"
     }
   ]
 }

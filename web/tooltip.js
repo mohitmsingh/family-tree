@@ -1,4 +1,7 @@
-function showTooltip(event, person) {
+function showTooltip(
+  event,
+  person
+) {
 
   const tooltip =
     document.getElementById(
@@ -7,35 +10,42 @@ function showTooltip(event, person) {
 
   tooltip.innerHTML = `
 
-    <strong>${person.name}</strong>
+    <strong>
+      ${person.name}
+    </strong>
 
     <hr>
 
     🎂 DOB:
-    ${person.dob}<br>
+    ${person.dob}
+    <br>
 
     🎈 Age:
-    ${person.age}<br>
+    ${person.age}
+    <br>
 
     👤 Gender:
-    ${person.gender}<br>
+    ${person.gender}
+    <br>
 
-    📍 Birth:
-    ${person.birth_place}<br>
+    🏠 Birth Place:
+    ${person.birth_place}
+    <br>
 
-    🏙️ City:
+    📍 Current City:
     ${person.current_city}
 
   `;
 
   tooltip.style.left =
-    event.pageX + 15 + "px";
+    `${event.pageX + 15}px`;
 
   tooltip.style.top =
-    event.pageY + 15 + "px";
+    `${event.pageY + 15}px`;
 
   tooltip.style.display =
     "block";
+
 }
 
 function hideTooltip() {
@@ -44,6 +54,7 @@ function hideTooltip() {
     .getElementById(
       "tooltip"
     )
-    .style
-    .display = "none";
+    .style.display =
+      "none";
+
 }
