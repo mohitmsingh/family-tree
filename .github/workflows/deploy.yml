@@ -44,7 +44,7 @@ jobs:
 
       - name: Validate Family YAML
         run: |
-          python scripts/validate_yaml.py
+          python scripts/validate_csv.py
 
       - name: Generate Family Tree Data
         run: |

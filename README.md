@@ -29,7 +29,7 @@ web/
 
 ```bash
 pip install pyyaml
-python scripts/validate_yaml.py
+python scripts/validate_csv.py
 python scripts/generate_tree.py
 ```
 
