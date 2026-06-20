@@ -30,9 +30,10 @@ function initializeTree(data) {
 
   });
 
-  // --------------------------
-  // One parent per child
-  // --------------------------
+  // -----------------------------------
+  // Assign each child to only one parent
+  // (required for D3 tree hierarchy)
+  // -----------------------------------
 
   const childrenMap = {};
   const assignedChildren =
@@ -74,19 +75,14 @@ function initializeTree(data) {
 
   });
 
-  const allChildren =
-    new Set(
-      parentLinks.map(
-        r => r.child
-      )
-    );
+  // -----------------------------------
+  // USE ROOTS FROM GENERATED JSON
+  // -----------------------------------
 
   const roots =
-    data.people.filter(
-      p =>
-        !allChildren.has(
-          p.id
-        )
+    data.root_ancestors.map(
+      root =>
+        people[root.id]
     );
 
   const svg =
@@ -95,7 +91,8 @@ function initializeTree(data) {
   const group =
     d3.select("#treeGroup");
 
-  group.selectAll("*")
+  group
+    .selectAll("*")
     .remove();
 
   const zoom =
@@ -138,6 +135,13 @@ function initializeTree(data) {
 
   }
 
+  // -----------------------------------
+  // Prevent duplicate spouse rendering
+  // -----------------------------------
+
+  const renderedSpouses =
+    new Set();
+
   roots.forEach(
     (
       rootPerson,
@@ -154,16 +158,17 @@ function initializeTree(data) {
       const treeLayout =
         d3.tree()
           .nodeSize([
-            260,
+            280,
             220
           ]);
 
       treeLayout(root);
 
       const xOffset =
-        index * 1200;
+        index * 1400;
 
-      root.descendants()
+      root
+        .descendants()
         .forEach(node => {
 
           node.x +=
@@ -171,9 +176,9 @@ function initializeTree(data) {
 
         });
 
-      // ------------------
-      // Parent links
-      // ------------------
+      // ---------------------------
+      // Parent-child links
+      // ---------------------------
 
       group
         .selectAll(
@@ -198,6 +203,10 @@ function initializeTree(data) {
               d => d.y
             )
         );
+
+      // ---------------------------
+      // Nodes
+      // ---------------------------
 
       const nodes =
         group
@@ -227,9 +236,9 @@ function initializeTree(data) {
               this
             );
 
-          // ------------------
-          // Person Image
-          // ------------------
+          // ---------------------------
+          // Person image
+          // ---------------------------
 
           g.append(
             "image"
@@ -271,9 +280,9 @@ function initializeTree(data) {
               hideTooltip
             );
 
-          // ------------------
-          // Person Name
-          // ------------------
+          // ---------------------------
+          // Person name
+          // ---------------------------
 
           g.append(
             "text"
@@ -290,9 +299,9 @@ function initializeTree(data) {
               d.data.name
             );
 
-          // ------------------
+          // ---------------------------
           // Spouse
-          // ------------------
+          // ---------------------------
 
           const spouseId =
             spouseMap[
@@ -307,12 +316,44 @@ function initializeTree(data) {
 
           }
 
+          const pairKey =
+            [
+              d.data.id,
+              spouseId
+            ]
+              .sort()
+              .join("-");
+
+          if (
+            renderedSpouses.has(
+              pairKey
+            )
+          ) {
+
+            return;
+
+          }
+
+          renderedSpouses.add(
+            pairKey
+          );
+
           const spouse =
             people[
               spouseId
             ];
 
-          // marriage line
+          if (
+            !spouse
+          ) {
+
+            return;
+
+          }
+
+          // ---------------------------
+          // Marriage line
+          // ---------------------------
 
           g.append(
             "line"
@@ -331,14 +372,16 @@ function initializeTree(data) {
             )
             .attr(
               "x2",
-              80
+              90
             )
             .attr(
               "y2",
               0
             );
 
-          // spouse image
+          // ---------------------------
+          // Spouse image
+          // ---------------------------
 
           g.append(
             "image"
@@ -349,7 +392,7 @@ function initializeTree(data) {
             )
             .attr(
               "x",
-              80
+              90
             )
             .attr(
               "y",
@@ -380,7 +423,9 @@ function initializeTree(data) {
               hideTooltip
             );
 
-          // spouse name
+          // ---------------------------
+          // Spouse name
+          // ---------------------------
 
           g.append(
             "text"
@@ -391,7 +436,7 @@ function initializeTree(data) {
             )
             .attr(
               "x",
-              110
+              120
             )
             .attr(
               "y",
@@ -406,6 +451,10 @@ function initializeTree(data) {
 
     }
   );
+
+  // -----------------------------------
+  // Initial zoom
+  // -----------------------------------
 
   svg.call(
     zoom.transform,
