@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>🌳 Family Tree</title>
+
+  <link
+    rel="stylesheet"
+    href="style.css">
+
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+
+</head>
+
+<body>
+
+  <header>
+
+    <div class="logo">
+      🌳 Family Tree
+    </div>
+
+    <div class="header-actions">
+
+      <input
+        id="searchInput"
+        type="text"
+        placeholder="🔍 Search family member..." />
+
+      <button id="themeToggle">
+        🌙
+      </button>
+
+    </div>
+
+  </header>
+
+  <!-- Statistics -->
+
+  <section id="statsContainer">
+
+    <div class="stat-card">
+
+      <div
+        class="stat-value"
+        id="totalMembers">
+        0
+      </div>
+
+      <div class="stat-label">
+        Members
+      </div>
+
+    </div>
+
+    <div class="stat-card">
+
+      <div
+        class="stat-value"
+        id="maleMembers">
+        0
+      </div>
+
+      <div class="stat-label">
+        Males
+      </div>
+
+    </div>
+
+    <div class="stat-card">
+
+      <div
+        class="stat-value"
+        id="femaleMembers">
+        0
+      </div>
+
+      <div class="stat-label">
+        Females
+      </div>
+
+    </div>
+
+    <div class="stat-card">
+
+      <div
+        class="stat-value"
+        id="avgAge">
+        0
+      </div>
+
+      <div class="stat-label">
+        Average Age
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- Upcoming Birthdays -->
+
+  <section id="birthdayContainer">
+
+  </section>
+
+  <!-- Family Tree -->
+
+  <main>
+
+    <div id="treeContainer">
+
+      <svg id="treeSvg">
+
+        <g id="treeGroup"></g>
+
+      </svg>
+
+    </div>
+
+  </main>
+
+  <!-- Hover Tooltip -->
+
+  <div id="tooltip"></div>
+
+  <!-- Scripts -->
+
+  <script src="app.js"></script>
+  <script src="stats.js"></script>
+  <script src="search.js"></script>
+  <script src="tooltip.js"></script>
+  <script src="tree.js"></script>
+
+</body>
+
+</html>

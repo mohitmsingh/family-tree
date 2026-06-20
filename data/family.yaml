@@ -1,0 +1,111 @@
+people:
+
+  - id: p001
+    name: Ram Sharma
+    dob: "1940-05-10"
+    gender: male
+    birth_place: Nagpur
+    current_city: Nagpur
+    photo: ""
+
+  - id: p002
+    name: Sita Sharma
+    dob: "1944-08-15"
+    gender: female
+    birth_place: Nagpur
+    current_city: Nagpur
+    photo: ""
+
+  - id: p003
+    name: Mahesh Sharma
+    dob: "1968-01-10"
+    gender: male
+    birth_place: Nagpur
+    current_city: Nagpur
+    photo: ""
+
+  - id: p004
+    name: Sunita Sharma
+    dob: "1972-04-18"
+    gender: female
+    birth_place: Pune
+    current_city: Nagpur
+    photo: ""
+
+  - id: p005
+    name: Rakesh Sharma
+    dob: "1970-09-20"
+    gender: male
+    birth_place: Nagpur
+    current_city: Mumbai
+    photo: ""
+
+  - id: p006
+    name: Anita Sharma
+    dob: "1975-03-11"
+    gender: female
+    birth_place: Mumbai
+    current_city: Mumbai
+    photo: ""
+
+  - id: p007
+    name: Priya Sharma
+    dob: "1998-02-12"
+    gender: female
+    birth_place: Nagpur
+    current_city: Pune
+    photo: ""
+
+  - id: p008
+    name: Neha Sharma
+    dob: "2000-06-21"
+    gender: female
+    birth_place: Nagpur
+    current_city: Bengaluru
+    photo: ""
+
+relationships:
+
+  - type: spouse
+    person1: p001
+    person2: p002
+
+  - type: spouse
+    person1: p003
+    person2: p004
+
+  - type: spouse
+    person1: p005
+    person2: p006
+
+  - type: parent
+    parent: p001
+    child: p003
+
+  - type: parent
+    parent: p002
+    child: p003
+
+  - type: parent
+    parent: p001
+    child: p005
+
+  - type: parent
+    parent: p002
+    child: p005
+
+  - type: parent
+    parent: p003
+    child: p007
+
+  - type: parent
+    parent: p004
+    child: p007
+
+  - type: parent
+    parent: p003
+    child: p008
+
+  - type: parent
+    parent: p004
+    child: p008

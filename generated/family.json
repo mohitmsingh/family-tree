@@ -1,0 +1,198 @@
+{
+  "generated_at": "2026-06-20T20:12:40.445788+00:00",
+  "stats": {
+    "total_members": 8,
+    "male_count": 3,
+    "female_count": 5,
+    "average_age": 55,
+    "oldest_member": "Ram Sharma",
+    "youngest_member": "Neha Sharma",
+    "total_generations": 3,
+    "cities": [
+      "Bengaluru",
+      "Mumbai",
+      "Nagpur",
+      "Pune"
+    ],
+    "city_count": 4,
+    "upcoming_birthdays": [
+      {
+        "name": "Neha Sharma",
+        "birthday": "21 Jun 2026",
+        "days_until_birthday": 0,
+        "turning_age": 27
+      },
+      {
+        "name": "Sita Sharma",
+        "birthday": "15 Aug 2026",
+        "days_until_birthday": 55,
+        "turning_age": 82
+      }
+    ]
+  },
+  "root_ancestors": [
+    {
+      "id": "p001",
+      "name": "Ram Sharma"
+    },
+    {
+      "id": "p002",
+      "name": "Sita Sharma"
+    },
+    {
+      "id": "p004",
+      "name": "Sunita Sharma"
+    },
+    {
+      "id": "p006",
+      "name": "Anita Sharma"
+    }
+  ],
+  "people": [
+    {
+      "id": "p001",
+      "name": "Ram Sharma",
+      "dob": "1940-05-10",
+      "gender": "male",
+      "birth_place": "Nagpur",
+      "current_city": "Nagpur",
+      "photo": "male.svg",
+      "age": 86,
+      "generation": 1
+    },
+    {
+      "id": "p002",
+      "name": "Sita Sharma",
+      "dob": "1944-08-15",
+      "gender": "female",
+      "birth_place": "Nagpur",
+      "current_city": "Nagpur",
+      "photo": "female.svg",
+      "age": 81,
+      "generation": 1
+    },
+    {
+      "id": "p003",
+      "name": "Mahesh Sharma",
+      "dob": "1968-01-10",
+      "gender": "male",
+      "birth_place": "Nagpur",
+      "current_city": "Nagpur",
+      "photo": "male.svg",
+      "age": 58,
+      "generation": 2
+    },
+    {
+      "id": "p004",
+      "name": "Sunita Sharma",
+      "dob": "1972-04-18",
+      "gender": "female",
+      "birth_place": "Pune",
+      "current_city": "Nagpur",
+      "photo": "female.svg",
+      "age": 54,
+      "generation": 1
+    },
+    {
+      "id": "p005",
+      "name": "Rakesh Sharma",
+      "dob": "1970-09-20",
+      "gender": "male",
+      "birth_place": "Nagpur",
+      "current_city": "Mumbai",
+      "photo": "male.svg",
+      "age": 55,
+      "generation": 2
+    },
+    {
+      "id": "p006",
+      "name": "Anita Sharma",
+      "dob": "1975-03-11",
+      "gender": "female",
+      "birth_place": "Mumbai",
+      "current_city": "Mumbai",
+      "photo": "female.svg",
+      "age": 51,
+      "generation": 1
+    },
+    {
+      "id": "p007",
+      "name": "Priya Sharma",
+      "dob": "1998-02-12",
+      "gender": "female",
+      "birth_place": "Nagpur",
+      "current_city": "Pune",
+      "photo": "female.svg",
+      "age": 28,
+      "generation": 3
+    },
+    {
+      "id": "p008",
+      "name": "Neha Sharma",
+      "dob": "2000-06-21",
+      "gender": "female",
+      "birth_place": "Nagpur",
+      "current_city": "Bengaluru",
+      "photo": "female.svg",
+      "age": 26,
+      "generation": 3
+    }
+  ],
+  "relationships": [
+    {
+      "type": "spouse",
+      "person1": "p001",
+      "person2": "p002"
+    },
+    {
+      "type": "spouse",
+      "person1": "p003",
+      "person2": "p004"
+    },
+    {
+      "type": "spouse",
+      "person1": "p005",
+      "person2": "p006"
+    },
+    {
+      "type": "parent",
+      "parent": "p001",
+      "child": "p003"
+    },
+    {
+      "type": "parent",
+      "parent": "p002",
+      "child": "p003"
+    },
+    {
+      "type": "parent",
+      "parent": "p001",
+      "child": "p005"
+    },
+    {
+      "type": "parent",
+      "parent": "p002",
+      "child": "p005"
+    },
+    {
+      "type": "parent",
+      "parent": "p003",
+      "child": "p007"
+    },
+    {
+      "type": "parent",
+      "parent": "p004",
+      "child": "p007"
+    },
+    {
+      "type": "parent",
+      "parent": "p003",
+      "child": "p008"
+    },
+    {
+      "type": "parent",
+      "parent": "p004",
+      "child": "p008"
+    }
+  ]
+}
