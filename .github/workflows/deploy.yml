@@ -4,12 +4,12 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'data/family.yaml'
-      - 'scripts/generate_tree.py'
-      - 'web/**'
-      - 'photos/**'
-      - '.github/workflows/deploy.yml'
+    # paths:
+    #   - 'data/family.yaml'
+    #   - 'scripts/generate_tree.py'
+    #   - 'web/**'
+    #   - 'photos/**'
+    #   - '.github/workflows/deploy.yml'
 
 permissions:
   contents: read
