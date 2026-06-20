@@ -1,10 +1,15 @@
 let familyData = null;
 
+const BASE_PATH =
+  window.location.hostname === "mohitmsingh.github.io"
+    ? "/family-tree"
+    : "";
+
 async function loadData() {
 
   const response =
     await fetch(
-      "generated/family.json"
+      `${BASE_PATH}/generated/family.json`
     );
 
   if (!response.ok) {

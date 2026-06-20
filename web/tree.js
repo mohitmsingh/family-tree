@@ -245,7 +245,7 @@ function initializeTree(data) {
           )
             .attr(
               "href",
-              `../photos/${d.data.photo}`
+              `${BASE_PATH}/photos/${d.data.photo}`
             )
             .attr(
               "x",
@@ -388,7 +388,7 @@ function initializeTree(data) {
           )
             .attr(
               "href",
-              `../photos/${spouse.photo}`
+              `${BASE_PATH}/photos/${spouse.photo}`
             )
             .attr(
               "x",
